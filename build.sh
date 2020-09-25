@@ -1,13 +1,44 @@
-# generation type
-type="basic"
+help_text="
+  my help text
+"
 
 
-# if component name is not specified, create Template
-if [ -n "$1" ]; then
-  component=$1
-else
+function args() {
+  # template type
+  type="basic"
+  # component name
   component="Template"
-fi
+
+
+  PARSED_ARGUMENTS=$(getopt -a -n build -o ht: --long help,type: -- "$@")
+  VALID_ARGUMENTS=$?
+  if [ "$VALID_ARGUMENTS" != "0" ]; then
+    usage
+  fi
+
+  echo "PARSED_ARGUMENTS is $PARSED_ARGUMENTS"
+  eval set -- "$PARSED_ARGUMENTS"
+  while :
+  do
+    case "$1" in
+      -h | --help) HELP=1   ; shift   ;;
+      -t | --type) TYPE="$2"; shift 2 ;;
+      # -- means the end of the arguments; drop this, and break out of the while loop
+      --) shift; break ;;
+      # If invalid options were passed, then getopt should have reported an error,
+      # which we checked as VALID_ARGUMENTS when getopt was called...
+      *) echo "Unexpected option: $1 - this should not happen."
+         usage ;;
+    esac
+  done
+
+  echo "HELP  : $HELP"
+  echo "TYPE  : $TYPE"
+  echo "Parameters remaining are: $1"
+}
+
+args "$@"
+
 
 srcDirectoryValidation() {
   dir="src"
@@ -21,15 +52,26 @@ srcDirectoryValidation() {
   fi
 }
 
+templatesDirectoryValidation() {
+  repo_path="$1"
+  type="$2"
+  dir="$repo_path"/templates/"$type"
+
+  if [ ! -d "$dir" ]; then
+    echo "Error: ${dir}. Template does NOT exist;"
+    exit 1
+  fi
+}
+
 componentsDirectoryValidation() {
-  DIR="src/components"
-  if [ -d "$DIR" ]; then
-    # Continue if $DIR exists. #
-    echo "Installing component files in ${DIR}..."
+  dir="src/components"
+  if [ -d "$dir" ]; then
+    # Continue if $dir exists. #
+    echo "Installing component files in ${dir}..."
   else
-    #  exit from bash script if $DIR does NOT exists ###
-    echo "Warning: ${DIR} not found. Creating..."
-    mkdir "$DIR"
+    #  exit from bash script if $dir does NOT exists ###
+    echo "Warning: ${dir} not found. Creating..."
+    mkdir "$dir"
   fi
 }
 
@@ -70,6 +112,9 @@ run() {
   # check if src directory exists in current path
 	srcDirectoryValidation
 
+	# check if templates folder exists
+	templatesDirectoryValidation "$repo_path" "$type"
+
 	# check if src/components directory exists
 	componentsDirectoryValidation
 
@@ -88,6 +133,7 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
   SOURCE="$(readlink "$SOURCE")"
   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
+
 repo_path="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-run "$repo_path" "$type" "$component"
+# run "$repo_path" "$type" "$component"
