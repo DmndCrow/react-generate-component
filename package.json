@@ -1,0 +1,13 @@
+{
+  "name": "react-generate-component",
+  "version": "0.0.1",
+  "description": "Simple command to create ReactJS component files",
+  "scripts": {},
+  "bin": {
+    "react-generate-component": "./build.sh"
+  },
+  "dependencies": {
+    "styled-components": "^5.2.0",
+    "prop-types": "^15.7.2"
+  }
+}
