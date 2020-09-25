@@ -1,6 +1,8 @@
 help_text="
   my help text
 "
+type="redux"
+component="$1"
 
 
 function args() {
@@ -37,7 +39,9 @@ function args() {
   echo "Parameters remaining are: $1"
 }
 
-args "$@"
+#args "$@"
+
+
 
 
 srcDirectoryValidation() {
@@ -136,4 +140,4 @@ done
 
 repo_path="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-# run "$repo_path" "$type" "$component"
+run "$repo_path" "$type" "$component"
