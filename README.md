@@ -1,5 +1,5 @@
 # react-generate-component
-react-generate-component is the npm package (not yet) for dynamic component generation using bash script (build.sh). It can be further extended by creating new templates using examples from __basic__ and __redux__ templates.
+react-generate-component is the npm package (not yet) for dynamic component generation using bash script (build.sh). By providing component name (or names, splitted by space), new component will be generated in src/components/ directory. It can be further extended by creating new templates using examples from __basic__ and __redux__ templates.
 
 By default, package uses __basic__ template and if no component name provided, _Template_ named component will be generated.
 
@@ -18,9 +18,6 @@ sudo nmp link
 ```
 react-generate-component {-h | --help} {-t | --type template_name} {component_name}
 ```
-
-### next update
-Create component for each argument splitted by space
 
 ### Example
 ```

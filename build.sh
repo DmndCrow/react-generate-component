@@ -1,15 +1,16 @@
+# help text
 help_text="usage: react-generate-component [option] [component_name]
 Options:
 -t | --type template_name : select required template from templates/ folder (default = basic)
 component_name            : setup component name that will be generated (default = Template)
 "
 
-
+# setup variables from arguments
 function getArgs() {
   # template type
   type="basic"
   # component name
-  component="Template"
+  components=("Template")
 
 
   PARSED_ARGUMENTS=$(getopt -a -n build -o ht: --long help,type: -- "$@")
@@ -33,14 +34,9 @@ function getArgs() {
     esac
   done
 
-  if [ $# -gt 0 ]; then
-    component=""
+  if [ ${#@} -gt 0 ]; then
+    components=( ${@:1:${#@}} )
   fi
-
-  for args in "${@^}"
-  do
-      component=${component:+$component}$args
-  done
 }
 
 getArgs "$@"
@@ -146,4 +142,7 @@ done
 
 repo_path="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-run "$repo_path" "$type" "$component"
+
+for (( i=1; i < ${#components[@]} + 1; i++ )); do
+  run "$repo_path" "$type" "${components[$i - 1]}"
+done
