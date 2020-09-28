@@ -1,11 +1,11 @@
-help_text="
-  my help text
+help_text="usage: react-generate-component [option] [component_name]
+Options:
+-t | --type template_name : select required template from templates/ folder (default = basic)
+component_name            : setup component name that will be generated (default = Template)
 "
-type="redux"
-component="$1"
 
 
-function args() {
+function getArgs() {
   # template type
   type="basic"
   # component name
@@ -18,13 +18,12 @@ function args() {
     usage
   fi
 
-  echo "PARSED_ARGUMENTS is $PARSED_ARGUMENTS"
   eval set -- "$PARSED_ARGUMENTS"
   while :
   do
     case "$1" in
-      -h | --help) HELP=1   ; shift   ;;
-      -t | --type) TYPE="$2"; shift 2 ;;
+      -h | --help) help=1   ; shift   ;;
+      -t | --type) type="$2"; shift 2 ;;
       # -- means the end of the arguments; drop this, and break out of the while loop
       --) shift; break ;;
       # If invalid options were passed, then getopt should have reported an error,
@@ -34,15 +33,22 @@ function args() {
     esac
   done
 
-  echo "HELP  : $HELP"
-  echo "TYPE  : $TYPE"
-  echo "Parameters remaining are: $1"
+  if [ $# -gt 0 ]; then
+    component=""
+  fi
+
+  for args in "${@^}"
+  do
+      component=${component:+$component}$args
+  done
 }
 
-#args "$@"
+getArgs "$@"
 
-
-
+if [ "${help}" ]; then
+  echo "$help_text"
+  exit 1
+fi
 
 srcDirectoryValidation() {
   dir="src"
