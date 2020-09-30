@@ -1,13 +1,30 @@
 {
-  "name": "react-generate-component",
-  "version": "1.0.2",
+  "name": "@dmndcrow/react-generate-component",
+  "version": "1.0.3",
   "description": "Simple command to create ReactJS component files",
   "scripts": {},
   "bin": {
-    "react-generate-component": "./build.sh"
+    "react-generate-component": "build.sh"
   },
   "dependencies": {
     "styled-components": "^5.2.0",
     "prop-types": "^15.7.2"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DmndCrow/react-generate-component.git"
+  },
+  "keywords": [
+    "component",
+    "generate",
+    "react",
+    "reactjs"
+  ],
+  "author": "DmndCrow",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DmndCrow/react-generate-component/issues"
+  },
+  "homepage": "https://github.com/DmndCrow/react-generate-component#readme"
 }
